@@ -1,0 +1,240 @@
+{
+    "id": "C543DEC1-0E18-4ADE-9359-1A2D5767F01E",
+    "name": "Duffle",
+    "friendlyName": "CNAB installer",
+    "description": "Duffle is a command line tool that allows you to install and manage CNAB bundles",
+    "helpMarkDown": "[More Information](https://go.microsoft.com/fwlink/?linkid=851275)",
+    "category": "Deploy",
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "preview": true,
+    "author": "Microsoft Corporation",
+    "version": {
+        "Major": 0,
+        "Minor": 0,
+        "Patch": 1
+    },
+    "demands": [],
+    "groups": [
+        {
+            "name": "kubernetesCluster",
+            "displayName": "Kubernetes Cluster",
+            "isExpanded": false
+        },
+        {
+            "name": "containerRegistry",
+            "displayName": "Container Registry",
+            "isExpanded": false
+        },        
+        {
+            "name": "advanced",
+            "displayName": "Advanced Options",
+            "isExpanded": false
+        }
+    ],
+    "inputs": [
+        {
+            "name": "command",
+            "type": "string",
+            "label": "Command",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Specify a Duffle command to run."
+        },
+        {
+            "name": "arguments",
+            "type": "multiLine",
+            "required": false,
+            "properties": {
+                "resizable": "true",
+                "rows": "2",
+                "editorExtension": "ms.vss-services-azure.parameters-grid"
+            },
+            "label": "Arguments",
+            "helpMarkDown": "Arguments to the specified duffle command."
+        },
+        {
+            "name": "kubernetesConnectionType",
+            "type": "pickList",
+            "label": "Service connection type",
+            "defaultValue": "None",
+            "required": true,
+            "options": {
+                "Azure Resource Manager": "Azure Resource Manager",
+                "Kubernetes Service Connection": "Kubernetes Service Connection",
+                "None": "None"
+            },
+            "groupName": "kubernetesCluster",
+            "helpMarkDown": "Select a service connection type."
+        },
+        {
+            "name": "kubernetesServiceEndpoint",
+            "type": "connectedService:kubernetes",
+            "label": "Kubernetes service connection",
+            "visibleRule": "kubernetesConnectionType = Kubernetes Service Connection",
+            "helpMarkDown": "Select a Kubernetes service connection.",
+            "groupName": "kubernetesCluster",
+            "required": true
+        },
+        {
+            "name": "aksSubscriptionEndpoint",
+            "type": "connectedService:AzureRM",
+            "label": "Azure subscription",
+            "helpMarkDown": "Select the Azure Resource Manager subscription, which contains Azure Container Registry.Note: To configure new service connection, select the Azure subscription from the list and click 'Authorize'. If your subscription is not listed or if you want to use an existing Service Principal, you can setup an Azure service connection using 'Add' or 'Manage' button.",
+            "visibleRule": "kubernetesConnectionType = Azure Resource Manager",
+            "defaultValue": "",
+            "groupName": "kubernetesCluster",
+            "required": true
+        },
+        {
+            "name": "aksResourceGroup",
+            "label": "Resource group",
+            "type": "pickList",
+            "helpMarkDown": "Select an Azure resource group.",
+            "visibleRule": "kubernetesConnectionType = Azure Resource Manager",
+            "defaultValue": "",
+            "required": true,
+            "groupName": "kubernetesCluster",
+            "properties": {
+                "EditableOptions": "True"
+            }
+        },
+        {
+            "name": "kubernetesCluster",
+            "label": "Kubernetes cluster",
+            "type": "pickList",
+            "helpMarkDown": "Select an Azure managed cluster.",
+            "visibleRule": "kubernetesConnectionType = Azure Resource Manager",
+            "defaultValue": "",
+            "required": true,
+            "groupName": "kubernetesCluster",
+            "properties": {
+                "EditableOptions": "True"
+            }
+        },
+        {
+            "name": "containerRegistryType",
+            "type": "pickList",
+            "label": "Container registry type",
+            "defaultValue": "None",
+            "required": true,
+            "options": {
+                "Azure Container Registry": "Azure Container Registry",
+                "Container Registry": "Container Registry",
+                "None": "None"
+            },
+            "groupName": "containerRegistry",
+            "helpMarkDown": "Select 'Azure Container Registry' to connect to it by using an Azure Service Connection. Select 'Container registry' to connect to Docker Hub or any other private container registry."
+        },
+        {
+            "name": "dockerRegistryEndpoint",
+            "type": "connectedService:dockerregistry",
+            "label": "Docker registry service connection",
+            "helpMarkDown": "Select a Docker registry service connection. Required for commands that need to authenticate with a registry.",
+            "groupName": "containerRegistry",
+            "visibleRule": "containerRegistryType = Container Registry"
+        },
+        {
+            "name": "azureContainerSubscriptionEndpoint",
+            "type": "connectedService:AzureRM",
+            "label": "Azure subscription",
+            "helpMarkDown": "Select an Azure subscription",
+            "groupName": "containerRegistry",
+            "visibleRule": "containerRegistryType = Azure Container Registry"
+        },
+        {
+            "name": "azureContainerRegistry",
+            "label": "Azure container registry",
+            "type": "pickList",
+            "helpMarkDown": "Select an Azure Container Registry in the selected Azure Subscription. The container image will be built and pushed to this container registry.",
+            "visibleRule": "containerRegistryType = Azure Container Registry",
+            "defaultValue": "",
+            "groupName": "containerRegistry",
+            "properties": {
+                "EditableOptions": "True"
+            }
+        },      
+        {
+            "name": "versionOrLocation",
+            "type": "radio",
+            "label": "Duffle",
+            "defaultValue": "version",
+            "required": false,
+            "options": {
+                "version": "Version",
+                "location": "Specify location"
+            },
+            "helpMarkDown": "Duffle is a command line tool that allows you to install and manage CNAB bundles.",
+            "groupName": "advanced"
+        },
+        {
+            "name": "version",
+            "type": "string",
+            "label": "Version",
+            "defaultValue": "0.1.0-ralpha.4+dramallamabuie",
+            "helpMarkDown": "Version to get.",
+            "groupName": "advanced",
+            "visibleRule": "versionOrLocation = version"
+        },
+        {
+            "name": "checkLatest",
+            "type": "boolean",
+            "label": "Check for latest version",
+            "defaultValue": "false",
+            "helpMarkDown": "Always checks online for the latest available version (stable.txt) that satisfies the version spec. This is typically false unless you have a specific scenario to always get latest. This will cause it to incur download costs when potentially not necessary, especially with the hosted build pool.",
+            "required": false,
+            "groupName": "advanced",
+            "visibleRule": "versionOrLocation = version"
+        },
+        {
+            "name": "specifyLocation",
+            "type": "filePath",
+            "label": "Path to duffle",
+            "defaultValue": "",
+            "helpMarkDown": "Full path to the duffle.exe",
+            "required": true,
+            "groupName": "advanced",
+            "visibleRule": "versionOrLocation = location"
+        }
+    ],
+    "dataSourceBindings": [        
+        {
+            "target": "aksResourceGroup",
+            "endpointId": "$(aksSubscriptionEndpoint)",
+            "endpointUrl": "{{{endpoint.url}}}/subscriptions/{{{endpoint.subscriptionId}}}/providers/Microsoft.ContainerService/managedClusters?api-version=2017-08-31",
+            "resultSelector": "jsonpath:$.value[*]",
+            "resultTemplate": "{{{ #extractResource id resourcegroups}}}"
+        },
+        {
+            "target": "kubernetesCluster",
+            "endpointId": "$(aksSubscriptionEndpoint)",
+            "endpointUrl": "{{{endpoint.url}}}/subscriptions/{{{endpoint.subscriptionId}}}/resourceGroups/$(aksResourceGroup)/providers/Microsoft.ContainerService/managedClusters?api-version=2017-08-31",
+            "resultSelector": "jsonpath:$.value[*]",
+            "resultTemplate": "{{{name}}}"
+        },
+        {
+            "target": "azureContainerRegistry",
+            "endpointId": "$(azureContainerSubscriptionEndpoint)",
+            "dataSourceName": "AzureRMContainerRegistries",
+            "resultTemplate": "{\"Value\":\"{{{properties.loginServer}}}\",\"DisplayValue\":\"{{{name}}}\"}"
+        }    
+    ],
+    "instanceNameFormat": "duffle $(command)",
+    "execution": {
+        "Node": {
+            "target": "src//duffle.js"
+        }
+    },
+    "messages": {
+        "DownloadingClient": "Downloading duffle.",
+        "KubernetesClusterResourceGroup": "Kubernetes cluster %s, resource group %s.",
+        "DownloadingDuffleFromUrl": "Downloading Duffle from URL: %s",
+        "DownloadDuffleFailed": "Can not download the Duffle client of version %s. Check if the version is correct https://github.com/deislabs/duffle/releases",
+        "DownloadStableVersionFailed": "Can not download kubernetes stable version file from %s. Falling back to %s",
+        "KubeConfigFilePath": "Kubernetes config file path: %s",
+        "NoDataWrittenOnFile": "Docker config file setup failed. path: %s",
+        "DockerConfigFilePath": "Docker config file path: %s"
+    }
+}
