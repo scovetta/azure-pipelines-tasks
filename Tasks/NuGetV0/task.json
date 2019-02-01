@@ -1,4 +1,4 @@
-{
+﻿{
     "id": "2661B7E5-00F9-4DE1-BA41-04E68D70B528",
     "name": "NuGet",
     "friendlyName": "NuGet Command",
@@ -8,8 +8,8 @@
     "preview": "true",
     "version": {
         "Major": 0,
-        "Minor": 145,
-        "Patch": 0
+        "Minor": 146,
+        "Patch": 1
     },
     "runsOn": [
         "Agent",

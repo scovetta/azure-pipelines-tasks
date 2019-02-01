@@ -1,4 +1,4 @@
-{
+﻿{
     "id": "ad884ca2-732e-4b85-b2d3-ed71bcbd2788",
     "name": "npmAuthenticate",
     "friendlyName": "npm Authenticate (for task runners)",
@@ -8,8 +8,8 @@
     "author": "Microsoft Corporation",
     "version": {
         "Major": 0,
-        "Minor": 145,
-        "Patch": 0
+        "Minor": 146,
+        "Patch": 1
     },
     "runsOn": [
         "Agent",
