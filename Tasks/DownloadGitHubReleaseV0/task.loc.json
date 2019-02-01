@@ -47,9 +47,6 @@
         "specificVersion": "Specific Version",
         "specificTag": "Specific Tag"
       },
-      "properties": {
-        "EditableOptions": "True"
-      },
       "helpMarkDown": "ms-resource:loc.input.help.defaultVersionType"
     },
     {

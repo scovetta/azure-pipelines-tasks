@@ -47,9 +47,6 @@
         "specificVersion": "Specific Version",
         "specificTag": "Specific Tag"
       },
-      "properties": {
-        "EditableOptions": "True"
-      },
       "helpMarkDown": "Download assets from latest release or specific release version/tag"
     },
     {
